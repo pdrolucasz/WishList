@@ -1,19 +1,10 @@
-import NextAuth, { User, Account, Profile, } from "next-auth"
+import NextAuth, { User, Account, Profile, NextAuthOptions } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import { query as q } from 'faunadb'
 
 import { fauna } from '~/services/fauna'
 
-type SignInProps = {
-	user: User;
-	account: Account
-	profile: Profile & Record<string, unknown>
-	email: {
-		verificationRequest?: boolean | undefined
-	}
-}
-
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
 	// Configure one or more authentication providers
 	providers: [
 		GithubProvider({
@@ -23,7 +14,7 @@ export const authOptions = {
 		// ...add more providers here
 	],
 	callbacks: {
-		async signIn({ user }: SignInProps) {
+		async signIn({ user }) {
 			const { email } = user
 			try {
 				const user = await fauna.query<any>(
