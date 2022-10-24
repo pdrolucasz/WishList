@@ -26,15 +26,6 @@ export default async function handler(
 	const session = await getSession({ req })
 
 	if (session && session.user && session.user.email) {
-		const user = await fauna.query<User>(
-			q.Get(
-				q.Match(
-					q.Index('user_by_email'),
-					q.Casefold(session.user.email)
-				)
-			)
-		)
-
 		if (req.method === 'GET') {
 			const response = await fauna.query<any>(
 				q.Map(
@@ -51,6 +42,15 @@ export default async function handler(
 
 			return res.status(200).json({ type: 'success', message: 'Busca concluída!', collections })
 		} else if (req.method === 'POST') {
+			const user = await fauna.query<User>(
+				q.Get(
+					q.Match(
+						q.Index('user_by_email'),
+						q.Casefold(session.user.email)
+					)
+				)
+			)
+
 			const { name } = req.body
 
 			const data = {
