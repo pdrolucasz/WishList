@@ -1,5 +1,17 @@
-import NextAuth from "next-auth"
+import NextAuth, { User, Account, Profile, } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
+import { query as q } from 'faunadb'
+
+import { fauna } from '~/services/fauna'
+
+type SignInProps = {
+	user: User;
+	account: Account
+	profile: Profile & Record<string, unknown>
+	email: {
+		verificationRequest?: boolean | undefined
+	}
+}
 
 export const authOptions = {
 	// Configure one or more authentication providers
@@ -10,5 +22,62 @@ export const authOptions = {
 		}),
 		// ...add more providers here
 	],
+	callbacks: {
+		async signIn({ user }: SignInProps) {
+			const { email } = user
+			try {
+				const user = await fauna.query<any>(
+					q.If(
+						q.Not(
+							q.Exists(
+								q.Match(
+									q.Index('user_by_email'),
+									q.Casefold(email!)
+								)
+							)
+						),
+						q.Create(
+							q.Collection('users'),
+							{ data: { email } }
+						),
+						q.Get(
+							q.Match(
+								q.Index('user_by_email'),
+								q.Casefold(email!)
+							)
+						)
+					)
+				)
+
+				await fauna.query(
+					q.If(
+						q.Not(
+							q.Exists(
+								q.Match(
+									q.Index('collection_by_user_id'),
+									[user.ref.id, "gostei"]
+								)
+							)
+						),
+						q.Create(
+							q.Collection('collections'),
+							{
+								data: {
+									user_id: user.ref.id,
+									name: "Gostei",
+									slug: "gostei"
+								}
+							}
+						),
+						true
+					)
+				)
+				return true
+			} catch (error) {
+				return false
+			}
+		},
+	},
+	secret: process.env.NEXTAUTH_SECRET!
 }
 export default NextAuth(authOptions)

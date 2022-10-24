@@ -43,14 +43,6 @@ export const HomeSlider: FC<HomeSliderProps> = ({ items }) => {
 		}
 	}
 
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		handleRightArrow()
-	// 	}, 1000)
-
-	// 	return () => clearInterval(interval);
-	// }, [])
-
 	return (
 		<>
 			<Arrows

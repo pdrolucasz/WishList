@@ -1,8 +1,12 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, HStack, Link as ChakraLink } from '@chakra-ui/react'
+import { useSession } from 'next-auth/react'
+import { ActiveLink } from './ActiveLink'
 import { Logo } from './Logo'
 import { SignInButton } from './SignInButton'
 
-export function Header() {
+export const Header = () => {
+	const { data } = useSession()
+
 	return (
 		<Flex
 			as="header"
@@ -21,7 +25,26 @@ export function Header() {
 				align="center"
 				justify="space-between"
 			>
-				<Logo />
+
+				<HStack>
+					<Logo />
+					<ActiveLink href="/">
+						<ChakraLink
+							position="relative"
+						>
+							Home
+						</ChakraLink>
+					</ActiveLink>
+					{data && (
+						<ActiveLink href="/perfil">
+							<ChakraLink
+								position="relative"
+							>
+								Perfil
+							</ChakraLink>
+						</ActiveLink>
+					)}
+				</HStack>
 
 				<SignInButton />
 			</Flex>

@@ -21,11 +21,13 @@ const Home: NextPage<HomeProps> = () => {
 
 	return (
 		<Flex
+			w="100%"
 			align="center"
 			justify="center"
 			maxW={1700}
 			position="relative"
 			m="0 auto"
+			py="4"
 		>
 			{trending.length > 0 && (
 				<HomeSlider

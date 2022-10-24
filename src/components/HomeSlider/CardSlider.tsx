@@ -1,5 +1,6 @@
-import { Box, Image, Text, VStack } from "@chakra-ui/react"
+import { Box, Button, Icon, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Text, VStack } from "@chakra-ui/react"
 import { FC, useState } from "react"
+import { RiAddLine, RiHeartLine, RiMenu2Line } from "react-icons/ri"
 
 interface CardSliderProps {
 	imageUrl: string
@@ -20,7 +21,6 @@ export const CardSlider: FC<CardSliderProps> = ({ imageUrl, title, description }
 			}}
 			cursor="pointer"
 			position="relative"
-			zIndex={mouseEnter ? 100 : 'inherit'}
 			onMouseEnter={() => setMouseEnter(true)}
 			onMouseLeave={() => setMouseEnter(false)}
 			overflow="hidden"
@@ -39,7 +39,7 @@ export const CardSlider: FC<CardSliderProps> = ({ imageUrl, title, description }
 					spacing="6"
 					// marginTop="-100px"
 					position="absolute"
-					p={{ 'sm': '2', 'md': '2', 'lg': '4' }}
+					p={{ sm: 2, md: 2, lg: 4 }}
 					bgGradient="linear(to-b, blackAlpha.600, blackAlpha.900)"
 					bottom="0"
 				>
@@ -51,6 +51,38 @@ export const CardSlider: FC<CardSliderProps> = ({ imageUrl, title, description }
 					</Text>
 				</VStack>
 			)}
+			{/* {mouseEnter && (
+				<VStack
+					w="100%"
+					spacing="6"
+					position="absolute"
+					p={{ sm: 2, md: 2, lg: 4 }}
+					top="0"
+					right="0"
+					align="flex-end"
+				>
+					<IconButton
+						variant='unstyled'
+						colorScheme='red'
+						aria-label='favorite'
+						fontSize='25'
+						icon={<Icon as={RiHeartLine} fontSize="25" color="red.400" />}
+					/>
+					<Menu>
+						<MenuButton
+							as={IconButton}
+							aria-label='Options'
+							icon={<Icon as={RiMenu2Line} />}
+							variant='unstyled'
+						/>
+						<MenuList>
+							<MenuItem icon={<Icon as={RiAddLine} />} command='⌘T'>
+								New Tab
+							</MenuItem>
+						</MenuList>
+					</Menu>
+				</VStack>
+			)} */}
 		</Box>
 	)
 }
