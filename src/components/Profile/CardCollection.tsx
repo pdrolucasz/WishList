@@ -7,7 +7,6 @@ import {
 	useToast
 } from '@chakra-ui/react'
 import { FC } from 'react'
-import { useSession } from 'next-auth/react'
 
 import { RiEditLine, RiDeleteBinLine } from 'react-icons/ri'
 
@@ -30,9 +29,6 @@ interface CardCollectionProps {
 
 export const CardCollection: FC<CardCollectionProps> = ({ collection, onOpenModalEdit }) => {
 	const toast = useToast()
-	const { data } = useSession()
-
-	if (!data) return null
 
 	const deleteCollection = useMutation(async () => {
 		return await api.delete(`collections/${collection.id}`)

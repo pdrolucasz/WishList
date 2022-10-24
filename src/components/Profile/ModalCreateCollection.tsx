@@ -11,7 +11,6 @@ import {
 	VStack,
 } from '@chakra-ui/react'
 import { FC } from 'react'
-import { useSession } from 'next-auth/react'
 
 import { AxiosError, AxiosResponse } from 'axios'
 
@@ -40,9 +39,6 @@ interface ModalCreateCollectionProps {
 
 export const ModalCreateCollection: FC<ModalCreateCollectionProps> = ({ isOpen, onClose }) => {
 	const toast = useToast()
-
-	const { data } = useSession()
-	if (!data) return null
 
 	const { register, handleSubmit, formState, reset } = useForm<FormData>({
 		resolver: yupResolver(FormSchema)
