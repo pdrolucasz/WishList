@@ -72,7 +72,7 @@ const Profile: NextPage<ProfileProps> = () => {
 				<Box w="100%" flex="1" borderRadius="8" bg="gray.800" p="8">
 					<Flex mb="8" justify="space-between" align="center">
 						<Heading size="lg" fontWeight="normal">
-							Listas
+							Coleções
 							{!isLoading && isFetching && (
 								<Spinner
 									size="sm"
